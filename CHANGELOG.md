@@ -26,6 +26,7 @@
 
 ## 2. týždeň
 ### Report
+tvorba prepinačov: B,f,s,c,o,a
 - 
 ### Otázky
 - 
