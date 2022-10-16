@@ -20,6 +20,7 @@
 
 ## 3. týždeň
 ### Report
+tvorba prepinačov: l,d,m,D
 - 
 ### Otázky
 - 
