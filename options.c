@@ -5,6 +5,8 @@
 #include <getopt.h>
 #include <string.h>
 
+#include <errno.h>
+
 #include "options.h"
 
 
@@ -67,6 +69,10 @@ struct CopymasterOptions ParseCopymasterOptions(int argc, char *argv[])
             case 'c': 
                 cpm_options.create = 1;
                 sscanf(optarg, "%o", &cpm_options.create_mode);
+                if(cpm_options.create_mode > 0777){
+                    errno=EINVAL;
+                    FatalError('c',"ZLE PRAVA",23);
+                }
                 break;
             case 'o': 
                 cpm_options.overwrite = 1;
@@ -110,6 +116,10 @@ struct CopymasterOptions ParseCopymasterOptions(int argc, char *argv[])
             case 'm': 
                 cpm_options.chmod = 1;
                 sscanf(optarg, "%o", &cpm_options.chmod_mode);
+                if(cpm_options.chmod_mode > 0777){
+                    errno=EINVAL;
+                    FatalError('m',"ZLE PRAVA",34);
+                }
                 break;
             case 'i': 
                 cpm_options.inode = 1;
