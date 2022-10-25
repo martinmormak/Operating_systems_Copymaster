@@ -14,6 +14,7 @@
 
 ## 4. týždeň
 ### Report
+tvorba prepinačov: i,K,t
 - 
 ### Otázky
 - 
