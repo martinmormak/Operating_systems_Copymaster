@@ -8,6 +8,8 @@
 
 ## 5. týždeň
 ### Report
+tvorba prepinačov: u
+oprava prepinačov: D
 - 
 ### Otázky
 - 

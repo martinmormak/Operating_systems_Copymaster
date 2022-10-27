@@ -138,6 +138,202 @@ int main(int argc, char* argv[])
     flags=O_RDWR|O_CREAT|O_TRUNC;
     stat(cpm_options.infile,&statBuf);
 
+    if(cpm_options.umask)
+    {
+        int permissions[3][3]={{0,0,0},
+        {0,0,0},
+        {0,0,0}};
+        mode_t mask = umask (0);
+        printf("%d\n",mask);
+        int b=mask-256;
+        if(b>=0)
+        {
+            permissions[0][0]=1;
+            mask=mask-256;
+        }
+        b=mask-128;
+        if(b>=0)
+        {
+            permissions[0][1]=1;
+            mask=mask-128;
+        }
+        b=mask-64;
+        if(b>=0)
+        {
+            permissions[0][2]=1;
+            mask=mask-64;
+        }
+        b=mask-32;
+        if(b>=0)
+        {
+            permissions[1][0]=1;
+            mask=mask-32;
+        }
+        b=mask-16;
+        if(b>=0)
+        {
+            permissions[1][1]=1;
+            mask=mask-16;
+        }
+        b=mask-8;
+        if(b>=0)
+        {
+            permissions[1][2]=1;
+            mask=mask-8;
+        }
+        b=mask-4;
+        if(b>=0)
+        {
+            permissions[2][0]=1;
+            mask=mask-4;
+        }
+        b=mask-2;
+        if(b>=0)
+        {
+            permissions[2][1]=1;
+            mask=mask-2;
+        }
+        b=mask-1;
+        if(b>=0)
+        {
+            permissions[2][2]=1;
+            mask=mask-1;
+        }
+        for(int i=0;i<3;i++)
+        {
+            for(int x=0;x<3;x++)
+            {
+                printf("%d\t",permissions[i][x]);
+            }
+            printf("\n");
+        }
+        for(int i=0;i<9;i++)
+        {
+            /*if(cpm_options.umask_options[i][0]=='o'||cpm_options.umask_options[i][0]=='g'||cpm_options.umask_options[i][0]=='u')
+            {
+                printf("%c\t%c\t%c\t%c\n",cpm_options.umask_options[i][0],cpm_options.umask_options[i][1],cpm_options.umask_options[i][2],cpm_options.umask_options[i][3]);
+            }*/
+            if(cpm_options.umask_options[i][0]=='u')
+            {
+                if(cpm_options.umask_options[i][1]=='+')
+                {
+                    if(cpm_options.umask_options[i][2]=='r')
+                    {
+                        permissions[0][0]=0;
+                    }
+                    if(cpm_options.umask_options[i][2]=='w')
+                    {
+                        permissions[0][1]=0;
+                    }
+                    if(cpm_options.umask_options[i][2]=='x')
+                    {
+                        permissions[0][0]=0;
+                    }
+                }
+                if(cpm_options.umask_options[i][1]=='-')
+                {
+                    if(cpm_options.umask_options[i][2]=='r')
+                    {
+                        permissions[0][0]=1;
+                    }
+                    if(cpm_options.umask_options[i][2]=='w')
+                    {
+                        permissions[0][1]=1;
+                    }
+                    if(cpm_options.umask_options[i][2]=='x')
+                    {
+                        permissions[0][0]=1;
+                    }
+                }
+            }
+            if(cpm_options.umask_options[i][0]=='g')
+            {
+                if(cpm_options.umask_options[i][1]=='+')
+                {
+                    if(cpm_options.umask_options[i][2]=='r')
+                    {
+                        permissions[1][0]=0;
+                    }
+                    if(cpm_options.umask_options[i][2]=='w')
+                    {
+                        permissions[1][1]=0;
+                    }
+                    if(cpm_options.umask_options[i][2]=='x')
+                    {
+                        permissions[1][0]=0;
+                    }
+                }
+                if(cpm_options.umask_options[i][1]=='-')
+                {
+                    if(cpm_options.umask_options[i][2]=='r')
+                    {
+                        permissions[2][0]=1;
+                    }
+                    if(cpm_options.umask_options[i][2]=='w')
+                    {
+                        permissions[2][1]=1;
+                    }
+                    if(cpm_options.umask_options[i][2]=='x')
+                    {
+                        permissions[2][0]=1;
+                    }
+                }
+            }
+            if(cpm_options.umask_options[i][0]=='o')
+            {
+                if(cpm_options.umask_options[i][1]=='+')
+                {
+                    if(cpm_options.umask_options[i][2]=='r')
+                    {
+                        permissions[2][0]=0;
+                    }
+                    if(cpm_options.umask_options[i][2]=='w')
+                    {
+                        permissions[2][1]=0;
+                    }
+                    if(cpm_options.umask_options[i][2]=='x')
+                    {
+                        permissions[2][0]=0;
+                    }
+                }
+                if(cpm_options.umask_options[i][1]=='-')
+                {
+                    if(cpm_options.umask_options[i][2]=='r')
+                    {
+                        permissions[2][0]=1;
+                    }
+                    if(cpm_options.umask_options[i][2]=='w')
+                    {
+                        permissions[2][1]=1;
+                    }
+                    if(cpm_options.umask_options[i][2]=='x')
+                    {
+                        permissions[2][0]=1;
+                    }
+                }
+            }
+        }
+        for(int i=0;i<3;i++)
+        {
+            for(int x=0;x<3;x++)
+            {
+                printf("%d\t",permissions[i][x]);
+            }
+            printf("\n");
+        }
+        mask=mask+permissions[0][0]*256;
+        mask=mask+permissions[0][1]*128;
+        mask=mask+permissions[0][2]*64;
+        mask=mask+permissions[1][0]*32;
+        mask=mask+permissions[1][1]*16;
+        mask=mask+permissions[1][2]*8;
+        mask=mask+permissions[2][0]*4;
+        mask=mask+permissions[2][1]*2;
+        mask=mask+permissions[2][2]*1;
+        umask(mask);
+        printf("%d\n",mask);
+    }
+
     //fast
     if(cpm_options.fast)
     {
@@ -403,7 +599,13 @@ int main(int argc, char* argv[])
             if(stStat.st_mode & S_IWOTH){dprintf(ofd,"w");}else{dprintf(ofd,"-");}
             if(stStat.st_mode & S_IXOTH){dprintf(ofd,"x");}else{dprintf(ofd,"-");}
             stTime=localtime(&stStat.st_mtime);
-            dprintf(ofd,"\t%ld\t%d\t%d\t%ld\t%02d-%02d-%02d\t%s\n",stStat.st_nlink,stStat.st_uid,stStat.st_gid,stStat.st_size,stTime->tm_mday,stTime->tm_mon+1,stTime->tm_year+1900,stDirent->d_name);
+            dprintf(ofd,"\t%ld\t",stStat.st_nlink);
+            dprintf(ofd,"%d\t",stStat.st_uid);
+            dprintf(ofd,"%d\t",stStat.st_gid);
+            dprintf(ofd,"%ld\t",stStat.st_size);
+            dprintf(ofd,"%02d-%02d-%02d\t",stTime->tm_mday,stTime->tm_mon+1,stTime->tm_year+1900);
+            dprintf(ofd,"%s\n",stDirent->d_name);
+            //dprintf(ofd,"\t%ld\t%d\t%d\t%ld\t%02d-%02d-%02d\t%s\n",stStat.st_nlink,stStat.st_uid,stStat.st_gid,stStat.st_size,stTime->tm_mday,stTime->tm_mon+1,stTime->tm_year+1900,stDirent->d_name);
         }
         close(ofd);
         closedir(directory);
