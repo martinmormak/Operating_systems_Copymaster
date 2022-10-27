@@ -227,7 +227,7 @@ int main(int argc, char* argv[])
                     }
                     if(cpm_options.umask_options[i][2]=='x')
                     {
-                        permissions[0][0]=0;
+                        permissions[0][2]=0;
                     }
                 }
                 if(cpm_options.umask_options[i][1]=='-')
@@ -242,7 +242,7 @@ int main(int argc, char* argv[])
                     }
                     if(cpm_options.umask_options[i][2]=='x')
                     {
-                        permissions[0][0]=1;
+                        permissions[0][2]=1;
                     }
                 }
             }
@@ -260,22 +260,22 @@ int main(int argc, char* argv[])
                     }
                     if(cpm_options.umask_options[i][2]=='x')
                     {
-                        permissions[1][0]=0;
+                        permissions[1][2]=0;
                     }
                 }
                 if(cpm_options.umask_options[i][1]=='-')
                 {
                     if(cpm_options.umask_options[i][2]=='r')
                     {
-                        permissions[2][0]=1;
+                        permissions[1][0]=1;
                     }
                     if(cpm_options.umask_options[i][2]=='w')
                     {
-                        permissions[2][1]=1;
+                        permissions[1][1]=1;
                     }
                     if(cpm_options.umask_options[i][2]=='x')
                     {
-                        permissions[2][0]=1;
+                        permissions[1][2]=1;
                     }
                 }
             }
@@ -293,7 +293,7 @@ int main(int argc, char* argv[])
                     }
                     if(cpm_options.umask_options[i][2]=='x')
                     {
-                        permissions[2][0]=0;
+                        permissions[2][2]=0;
                     }
                 }
                 if(cpm_options.umask_options[i][1]=='-')
@@ -308,7 +308,7 @@ int main(int argc, char* argv[])
                     }
                     if(cpm_options.umask_options[i][2]=='x')
                     {
-                        permissions[2][0]=1;
+                        permissions[2][2]=1;
                     }
                 }
             }
