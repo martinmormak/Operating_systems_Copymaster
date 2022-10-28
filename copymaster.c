@@ -587,7 +587,18 @@ int main(int argc, char* argv[])
         }
         while ((stDirent=readdir(directory))!=NULL)
         {
-            stat(stDirent->d_name,&stStat);
+            char str[80];
+            strcpy(str, cpm_options.infile);
+            strcat(str, "/");
+            strcat(str, stDirent->d_name);
+            if(strcmp(stDirent->d_name,"..")==0||strcmp(stDirent->d_name,".")==0)
+            {
+                continue;
+            }
+            if(stat(str,&stStat)==-1)
+            {
+                FatalError('D',"stat",28);
+            }
             if(S_ISDIR(stStat.st_mode)){dprintf(ofd,"d");}else{dprintf(ofd,"-");}
             if(stStat.st_mode & S_IRUSR){dprintf(ofd,"r");}else{dprintf(ofd,"-");}
             if(stStat.st_mode & S_IWUSR){dprintf(ofd,"w");}else{dprintf(ofd,"-");}
