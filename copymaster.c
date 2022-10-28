@@ -599,11 +599,11 @@ int main(int argc, char* argv[])
             if(stStat.st_mode & S_IWOTH){dprintf(ofd,"w");}else{dprintf(ofd,"-");}
             if(stStat.st_mode & S_IXOTH){dprintf(ofd,"x");}else{dprintf(ofd,"-");}
             stTime=localtime(&stStat.st_mtime);
-            dprintf(ofd,"\t%ld\t",stStat.st_nlink);
-            dprintf(ofd,"%d\t",stStat.st_uid);
-            dprintf(ofd,"%d\t",stStat.st_gid);
-            dprintf(ofd,"%ld\t",stStat.st_size);
-            dprintf(ofd,"%02d-%02d-%02d\t",stTime->tm_mday,stTime->tm_mon+1,stTime->tm_year+1900);
+            dprintf(ofd," %ld ",stStat.st_nlink);
+            dprintf(ofd,"%d ",stStat.st_uid);
+            dprintf(ofd,"%d ",stStat.st_gid);
+            dprintf(ofd,"%ld ",stStat.st_size);
+            dprintf(ofd,"%02d-%02d-%02d ",stTime->tm_mday,stTime->tm_mon+1,stTime->tm_year+1900);
             dprintf(ofd,"%s\n",stDirent->d_name);
             //dprintf(ofd,"\t%ld\t%d\t%d\t%ld\t%02d-%02d-%02d\t%s\n",stStat.st_nlink,stStat.st_uid,stStat.st_gid,stStat.st_size,stTime->tm_mday,stTime->tm_mon+1,stTime->tm_year+1900,stDirent->d_name);
         }
