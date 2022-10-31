@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     //-------------------------------------------------------------------
     
     int ifd,ofd,n,flags,speed=1000000/*,permissions[4]={0,0,0,0}*/;
-    struct stat statBuf;
+    struct stat statBuf,infileStatBuf,outfileStatBuf;
     char buf[1000000];
 
     //Bez akéhokoľvek prepínača
@@ -135,6 +135,39 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    //Sparse
+    if(cpm_options.sparse)
+    {
+        if((ifd=open(cpm_options.infile,O_RDONLY))<0)
+        {
+            FatalError('S',"INA CHYBA",41);
+        }
+        stat(cpm_options.infile,&infileStatBuf);
+        if((ofd=open(cpm_options.outfile,O_RDWR|O_CREAT|O_TRUNC,infileStatBuf.st_mode))<0)
+        {
+            FatalError('S',"INA CHYBA",41);
+        }
+        while ((n = read(ifd,&buf,1)) > 0)
+        {
+            if(buf==NULL)
+            {
+            }
+            else{
+                //write(ofd,&buf,1);
+                //printf("%s",buf);
+                dprintf(ofd,"%s",buf);
+            }
+        }
+        close(ofd);
+        close(ifd);
+        stat(cpm_options.outfile,&outfileStatBuf);
+        if(outfileStatBuf.st_blksize<infileStatBuf.st_blksize)
+        {
+            FatalError('S',"RIEDKY SUBOR NEVYTVORENY",41);
+        }
+        return 0;
+    }
+
     flags=O_RDWR|O_CREAT|O_TRUNC;
     stat(cpm_options.infile,&statBuf);
 
@@ -143,6 +176,10 @@ int main(int argc, char* argv[])
         int permissions[3][3]={{0,0,0},
         {0,0,0},
         {0,0,0}};
+        if(cpm_options.umask<0||cpm_options.umask>511)
+        {
+            FatalError('u',"ZLA MASKA",32);
+        }
         mode_t mask = umask (0);
         printf("%d\n",mask);
         int b=mask-256;
@@ -199,14 +236,14 @@ int main(int argc, char* argv[])
             permissions[2][2]=1;
             mask=mask-1;
         }
-        for(int i=0;i<3;i++)
+        /*for(int i=0;i<3;i++)
         {
             for(int x=0;x<3;x++)
             {
                 printf("%d\t",permissions[i][x]);
             }
             printf("\n");
-        }
+        }*/
         for(int i=0;i<9;i++)
         {
             /*if(cpm_options.umask_options[i][0]=='o'||cpm_options.umask_options[i][0]=='g'||cpm_options.umask_options[i][0]=='u')
@@ -313,14 +350,14 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        for(int i=0;i<3;i++)
+        /*for(int i=0;i<3;i++)
         {
             for(int x=0;x<3;x++)
             {
                 printf("%d\t",permissions[i][x]);
             }
             printf("\n");
-        }
+        }*/
         mask=mask+permissions[0][0]*256;
         mask=mask+permissions[0][1]*128;
         mask=mask+permissions[0][2]*64;
@@ -372,12 +409,14 @@ int main(int argc, char* argv[])
         //printf("%d",flags);
     }
 
+    //append and create
     if(cpm_options.create&&cpm_options.append)
     {
         flags=O_RDWR|O_CREAT|O_EXCL|O_APPEND;
         //printf("%d",flags);
     }
 
+    //lseek
     if(cpm_options.lseek)
     {
         if((ifd=open(cpm_options.infile,O_RDONLY))<0)
@@ -412,6 +451,7 @@ int main(int argc, char* argv[])
         return 0;
     }
     
+    //link
     if(cpm_options.link)
     {
         if(link(cpm_options.infile,cpm_options.outfile)<0)
@@ -428,6 +468,7 @@ int main(int argc, char* argv[])
         return 0;
     }
     
+    //open infile
     if((ifd=open(cpm_options.infile,O_RDONLY))<0)
     {
         if(flags==(O_RDWR|O_CREAT|O_EXCL))
@@ -456,6 +497,7 @@ int main(int argc, char* argv[])
         }
     }
 
+    //inode
     if(cpm_options.inode)
     {
         if(statBuf.st_ino!=cpm_options.inode_number)
@@ -470,6 +512,7 @@ int main(int argc, char* argv[])
         }
     }
 
+    //open outfile
     if((ofd=open(cpm_options.outfile,flags,statBuf.st_mode))<0)
     {
         if(flags==(O_RDWR|O_CREAT|O_EXCL))
@@ -497,13 +540,18 @@ int main(int argc, char* argv[])
             FatalError('B',"INA CHYBA",21);
         }
     }
+
+    //copy
     while ((n = read(ifd,&buf,speed)) > 0)
     {
         write(ofd,&buf,n);
     }
+
+    //close infile and outfile
     close(ofd);
     close(ifd);
 
+    //delete
     if(cpm_options.delete_opt)
     {
         if(S_ISDIR(statBuf.st_mode))
@@ -519,6 +567,7 @@ int main(int argc, char* argv[])
         }
     }
 
+    //truncate
     if(cpm_options.truncate)
     {
         if(cpm_options.truncate_size<0)
@@ -539,6 +588,7 @@ int main(int argc, char* argv[])
         }
     }
     
+    //chmod
     if(cpm_options.chmod)
     {
         if(chmod(cpm_options.outfile,cpm_options.chmod_mode)<0)

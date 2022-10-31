@@ -2,6 +2,7 @@
 
 ## 6. týždeň
 ### Report
+tvorba prepinačov: S
 - 
 ### Otázky
 - 
