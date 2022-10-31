@@ -153,9 +153,9 @@ int main(int argc, char* argv[])
             {
             }
             else{
-                //write(ofd,&buf,1);
+                write(ofd,&buf,1);
                 //printf("%s",buf);
-                dprintf(ofd,"%s",buf);
+                //dprintf(ofd,"%s",buf);
             }
         }
         close(ofd);
