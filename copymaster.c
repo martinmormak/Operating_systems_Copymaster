@@ -98,6 +98,162 @@ int main(int argc, char* argv[])
         return 42;
         exit(EXIT_FAILURE);
     }
+
+    if(cpm_options.fast&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.slow&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.create&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.overwrite&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.append&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.lseek&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.delete_opt&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.chmod&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.inode&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.umask&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.link&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.truncate&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.sparse&&cpm_options.directory){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+    
+    if(cpm_options.fast&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.slow&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.create&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.overwrite&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.append&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.lseek&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    /*if(cpm_options.directory&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }*/
+
+    if(cpm_options.delete_opt&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.chmod&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.inode&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.umask&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.link&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+
+    if(cpm_options.truncate&&cpm_options.sparse){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
     
     // TODO Nezabudnut dalsie kontroly kombinacii prepinacov ...
     
@@ -153,11 +309,12 @@ int main(int argc, char* argv[])
             {
             }
             else{
-                write(ofd,&buf,1);
-                //printf("%s",buf);
-                //dprintf(ofd,"%s",buf);
+                //write(ofd,&buf,1);
+                //printf("%s\n",buf);
+                dprintf(ofd,"%s",buf);
             }
         }
+        ftruncate(ofd,infileStatBuf.st_size);
         close(ofd);
         close(ifd);
         stat(cpm_options.outfile,&outfileStatBuf);
