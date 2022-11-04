@@ -255,6 +255,12 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
     
+    if(cpm_options.delete_opt&&!cpm_options.create){
+        fprintf(stderr, "CHYBA PREPINACOV\n"); 
+        return 42;
+        exit(EXIT_FAILURE);
+    }
+    
     // TODO Nezabudnut dalsie kontroly kombinacii prepinacov ...
     
     //-------------------------------------------------------------------
@@ -333,12 +339,28 @@ int main(int argc, char* argv[])
         int permissions[3][3]={{0,0,0},
         {0,0,0},
         {0,0,0}};
-        if(cpm_options.umask<0||cpm_options.umask>511)
+        /*if(cpm_options.umask<0||cpm_options.umask>511)
         {
             FatalError('u',"ZLA MASKA",32);
+        }*/
+        for(int i=0;i<9;i++)
+        {
+            if(cpm_options.umask_options[i][0]!='u'&&cpm_options.umask_options[i][0]!='g'&&cpm_options.umask_options[i][0]!='o')
+            {
+                FatalError('u',"ZLA MASKA",32);
+            }
+            if(cpm_options.umask_options[i][1]!='+'&&cpm_options.umask_options[i][1]!='-')
+            {
+                FatalError('u',"ZLA MASKA",32);
+            }
+            if(cpm_options.umask_options[i][2]!='r'&&cpm_options.umask_options[i][2]!='w'&&cpm_options.umask_options[i][2]!='x')
+            {
+                FatalError('u',"ZLA MASKA",32);
+            }
         }
-        mode_t mask = umask (0);
-        printf("%d\n",mask);
+        mode_t mask = umask (38);
+        //mask = umask (0);
+        //printf("%d\n",mask);
         int b=mask-256;
         if(b>=0)
         {
@@ -525,7 +547,7 @@ int main(int argc, char* argv[])
         mask=mask+permissions[2][1]*2;
         mask=mask+permissions[2][2]*1;
         umask(mask);
-        printf("%d\n",mask);
+        //printf("%d\n",mask);
     }
 
     //fast
