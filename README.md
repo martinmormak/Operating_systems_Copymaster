@@ -49,3 +49,45 @@ Vzorový changelog:
 ### Otázky
 - Aký význam má implementácia prepínača pre pomalé kopírovanie?
 
+
+
+
+
+
+Operating Systems 2018 – Copymaster
+
+This project was developed as part of the Operating Systems course (2018).
+
+It is based on the Copymaster assignment, which provides a basic structure for implementing a file copying utility with extended command-line options.
+
+Project Structure
+
+The project consists of two main modules:
+
+copymaster (copymaster.c) – main program module containing the main() function
+options (options.c, options.h) – command-line argument parsing and option handling
+Functionality
+
+The program processes command-line arguments using the function ParseCopymasterOptions(), which returns a structured representation of all parsed options.
+
+These options are stored in the CopymasterOptions structure and are used in main() to control program behavior.
+
+Each command-line switch (option) corresponds to a specific field in the structure. Some options also include additional parameters (e.g. --create, --lseek, --chmod, --umask, --truncate).
+
+Special handling is used for the --umask option, which supports multiple permission settings stored in a 2D array structure.
+
+Additional Requirements
+
+A required part of the assignment was maintaining a CHANGELOG.md file, which documents weekly progress, implemented features, fixes, and reports of activity.
+
+The changelog was used to track development progress and ensure continuous work on the project.
+
+Purpose
+
+The goal of the project was to practice:
+
+working with command-line arguments in C
+modular program design
+file manipulation and system-level operations
+structured data handling in C
+disciplined development with changelog documentation
